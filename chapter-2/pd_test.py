@@ -18,7 +18,7 @@ pearson_result = DataFrame(
 )
 
 euclidean_result = DataFrame(
-    np.ones(len(data.columns) ** 2).reshape(
+    np.zeros(len(data.columns) ** 2).reshape(
         len(data.columns),
         len(data.columns)),
     index=data.columns.values,
@@ -31,6 +31,14 @@ def set_pearson(data=data, result=pearson_result):
     for user in users:
         for u in users.drop(user):
             result[user][u] = data[user].corr(data[u])
+
+
+def set_euclidean(data=data, result=euclidean_result):
+    users = data.columns
+    for user in users:
+        for u in users.drop(user):
+            result[user][u] = (
+                (data[user] - data[u]) ** 2).sum() ** 0.5
 
 
 def pearson(s1, s2):
@@ -65,6 +73,8 @@ def get_recommend(username, data=data, pearson_result=pearson_result):
 
 
 if __name__ == '__main__':
-    set_pearson()
-    username = 'Thomas'
-    print (get_recommend(username))
+    # set_pearson()
+    # username = 'Jeff'
+    # print (get_recommend(username))
+    set_euclidean()
+    print (euclidean_result)
